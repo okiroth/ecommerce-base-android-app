@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Me Voy Al Super</string>
+    <string name="title_activity_home">Supermercado</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="title_activity_item_details">Producto</string>
+    <string name="action_cart">Carrito</string>
+    <string name="hint_search_products">Buscar productos</string>
+
+    <string name="my_addresses">Direcciones</string>
+    <string name="contact_info">Contacto</string>
+    <string name="credit_card">Tarjeta de Credito</string>
+
+    <string name="name">Nombre</string>
+    <string name="save">Guardar</string>
+    <string name="email">Correo eléctronico</string>
+    <string name="add">Agregar</string>
+    <string name="street">Calle (ejemplo: Mitre 147)</string>
+    <string name="title_activity_address_list">AddressListActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="number">Número</string>
+    <string name="name_on_card">Nombre del titular</string>
+    <string name="expire">Expiración (Ej: 0616)</string>
+    <string name="ccv">CCV</string>
+    <string name="choose_delivery_date">Cuándo quieres recibir la compra?</string>
+    <string name="acept">Aceptar</string>
+    <string name="cart_is_empty">El carrito esta vacio</string>
+    <string name="empty_results">Busca productos por nombre, marca o sección</string>
+    <string name="complete_userdata_legend">Completa estos datos para poder realizar tu compra</string>
+    <string name="phone">Teléfono</string>
+    <string name="new_address">Dirección donde recibirás las compras del super</string>
+    <string name="history_orders">Historial de compras</string>
+</resources>

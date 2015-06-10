@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    android:background="@drawable/border_1dp_radius"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_weight="1"
+            android:src="@drawable/ic_credit_card_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:layout_weight="9"
+            android:layout_gravity="center_vertical"
+            android:text="@string/credit_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:fontFamily="sans-serif-thin"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_marginBottom="10dp"
+            android:id="@+id/userdata_card_number"
+            android:inputType="datetime"
+            android:singleLine="true"
+            android:hint="@string/number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_marginBottom="10dp"
+            android:id="@+id/userdata_card_exp"
+            android:maxLength="4"
+            android:inputType="number"
+            android:hint="@string/expire"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_marginBottom="10dp"
+            android:id="@+id/userdata_card_name"
+            android:inputType="textCapCharacters"
+            android:hint="@string/name_on_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_marginBottom="10dp"
+            android:id="@+id/userdata_card_ccv"
+            android:maxLength="4"
+            android:inputType="numberPassword"
+            android:hint="@string/ccv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_save_card"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:text="@string/save"
+        android:background="@drawable/green_button_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right" />
+
+</LinearLayout>
+
+
+

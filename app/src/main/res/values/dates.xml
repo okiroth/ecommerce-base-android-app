@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dates_array">
+        <item>Mañana</item>
+        <item>Pasado mañana</item>
+    </string-array>
+    <string-array name="hours_array">
+        <item>Siesta (14:00 - 16:00)</item>
+        <item>Tarde (16:00 - 18:00)</item>
+        <item>Tardecita (18:00 - 20:00)</item>
+        <item>Noche (20:00 - 23:00)</item>
+    </string-array>
+</resources>
+
+
+
+
+
+
+
+

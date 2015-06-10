@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="false">
+
+        <shape android:shape="rectangle">
+            <stroke
+                android:width="0.25dp"
+                android:color="@color/gridBorder" />
+
+            <solid android:color="@android:color/transparent"></solid>
+        </shape>
+    </item>
+
+    <item>
+        <ripple android:color="?android:attr/colorControlHighlight">
+            <item>
+                <shape>
+                    <solid android:color="@android:color/transparent"/>
+                </shape>
+            </item>
+        </ripple>
+    </item>
+</selector>

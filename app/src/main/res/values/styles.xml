@@ -1,0 +1,27 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/ActionBar.Solid.ColorActionBar</item>
+    </style>
+
+    <style name="ActionBar.Solid.ColorActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="background">@color/appColor</item>
+    </style>
+
+    <style name="GridStyle">
+        <item name="android:background">@drawable/border_025_no_radius</item>
+    </style>
+
+    <style name="MyCustomTabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorColor">@android:color/transparent</item>
+        <item name="tabBackground">@drawable/tab_selector</item>
+        <item name="tabTextAppearance">@style/TabLayoutText</item>
+    </style>
+
+    <style name="TabLayoutText" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
+</resources>
