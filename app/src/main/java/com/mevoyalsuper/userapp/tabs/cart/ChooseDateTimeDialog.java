@@ -47,7 +47,7 @@ public class ChooseDateTimeDialog extends DialogFragment {
                 orderShop.save();
 
                 dismiss();
-                handler.afterDatetime(orderShop);
+                handler.afterDatetime();
             }
         });
 

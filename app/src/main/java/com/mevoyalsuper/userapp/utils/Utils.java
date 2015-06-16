@@ -3,6 +3,7 @@ package com.mevoyalsuper.userapp.utils;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 
 import com.mevoyalsuper.userapp.models.Address;
 import com.mevoyalsuper.userapp.models.CreditCard;
@@ -61,4 +62,5 @@ public class Utils {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM");
         return dateFormat.format(date);
     }
+
 }

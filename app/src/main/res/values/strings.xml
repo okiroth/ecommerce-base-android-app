@@ -32,4 +32,5 @@
     <string name="phone">Teléfono</string>
     <string name="new_address">Dirección donde recibirás las compras del super</string>
     <string name="history_orders">Historial de compras</string>
+    <string name="card_dni">DNI del titular</string>
 </resources>

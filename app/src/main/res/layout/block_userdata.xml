@@ -37,15 +37,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
-            android:layout_marginBottom="10dp"
             android:id="@+id/userdata_edit_name"
+            android:layout_marginBottom="10dp"
             android:inputType="textPersonName"
             android:hint="@string/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
-            android:layout_marginBottom="10dp"
             android:id="@+id/userdata_edit_phone"
+            android:layout_marginBottom="10dp"
             android:inputType="phone"
             android:hint="@string/phone"
             android:layout_width="match_parent"

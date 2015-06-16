@@ -1,6 +1,7 @@
 package com.mevoyalsuper.userapp.models;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -9,10 +10,14 @@ import java.util.List;
  */
 public class CreditCard extends SugarRecord<CreditCard> {
 
+    @Ignore
+    public static String DNI_LABEL = "DNI";
+
     public String number;
     public String ccv;
     public String exp;
     public String name;
+    public String dni;
 
     // User token
     public String user;

@@ -65,6 +65,15 @@
 
         <EditText
             android:layout_marginBottom="10dp"
+            android:id="@+id/userdata_card_dni"
+            android:maxLength="8"
+            android:inputType="number"
+            android:hint="@string/card_dni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_marginBottom="10dp"
             android:id="@+id/userdata_card_ccv"
             android:maxLength="4"
             android:inputType="numberPassword"

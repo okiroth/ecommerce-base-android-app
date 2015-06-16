@@ -41,6 +41,7 @@ public class CreditCardFragment extends Fragment {
         CreditCard card = CreditCard.getMainCard();
         if(card != null){
             ((EditText) rootView.findViewById(R.id.userdata_card_name)).setText(card.name);
+            ((EditText) rootView.findViewById(R.id.userdata_card_dni)).setText(card.dni);
             ((EditText) rootView.findViewById(R.id.userdata_card_ccv)).setText(card.ccv);
             cardNumber.setText(card.number);
             ((EditText) rootView.findViewById(R.id.userdata_card_exp)).setText(card.exp);

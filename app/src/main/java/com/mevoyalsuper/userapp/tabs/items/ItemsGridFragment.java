@@ -1,5 +1,6 @@
 package com.mevoyalsuper.userapp.tabs.items;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.mevoyalsuper.userapp.models.OrderShop;
 import com.mevoyalsuper.userapp.utils.ConnectionHelper;
@@ -105,27 +107,35 @@ public class ItemsGridFragment extends Fragment {
             RestAdapter adapter = new RestAdapter(getActivity(), ConnectionHelper.API_WEB_SERVER_ADDRESS);
             ModelRepository repository = adapter.createRepository(Product.LOOPBACK_NAME);
 
+            final ProgressDialog progress = ProgressDialog.show(getActivity(), null,
+                    "Actualizando productos, puede demorar unos minutos", true);
+
             repository.findAll(new ListCallback<Model>() {
 
                 @Override
-                public void onSuccess(List<Model> objects) {
-
-                    for(Model res : objects){
-                        Product product = new Product((String) res.get("sku"));
-
-                        product.name    = (String) res.get("name");
-                        product.price   = Double.valueOf((String) res.get("price"));
-                        product.apiId   = (String) res.get("apiId");
-                        product.tags    = (String) res.get("tags");
-                        product.img     = (String) res.get("img");
-
-                        product.save();
-                    }
+                public void onSuccess(final List<Model> objects) {
+                    new Thread(new Runnable() {
+                        public void run() {
+                            int i = 0;
+                            for(Model res : objects){
+                                Product product = new Product((String) res.get("sku"));
+                                product.name    = (String) res.get("name");
+                                product.price   = Double.valueOf((String) res.get("price"));
+                                product.apiId   = (String) res.get("apiId");
+                                product.tags    = (String) res.get("tags");
+                                product.img     = (String) res.get("img");
+                                product.save();
+                            }
+                            progress.dismiss();
+                        }
+                    }).start();
                 }
 
                 @Override
                 public void onError(Throwable t) {
                     t.printStackTrace();
+                    progress.dismiss();
+                    Toast.makeText(getActivity(), "Error al actualizar productos", Toast.LENGTH_LONG).show();
                 }
             });
         }
