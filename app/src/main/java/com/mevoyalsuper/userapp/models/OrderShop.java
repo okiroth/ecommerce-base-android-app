@@ -7,6 +7,8 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 import com.mevoyalsuper.userapp.utils.GlobalValues;
 import com.mevoyalsuper.userapp.utils.Utils;
+import com.strongloop.android.remoting.adapters.RestContract;
+import com.strongloop.android.remoting.adapters.RestContractItem;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,30 +46,21 @@ public class OrderShop extends SugarRecord<OrderShop>{
     public String address;
     public String receiver_name;
     public String owner;
-
-    // Basic security, only token owner / admin can access OrderShop form web
+    public String timestamp;
     public String token;
+    public String paytoken;
+    public String paymethod;
 
     public OrderShop() {
         this.products = new LinkedList<>();
         this.amounts = new LinkedList<>();
     }
 
-    public void decode(){
-        Collections.addAll(this.products, this.productsSave.split("|"));
-        for(String i : this.amountsSave.split("|")){
-            this.amounts.add(Integer.parseInt(i));
-        }
-    }
-
-    public List<OrderShop> getAllOrders(){
+    public static List<OrderShop> getAllOrders(){
         List<OrderShop> list = Select.from(OrderShop.class)
                 .where(Condition.prop("token").eq(User.getLoggedUser().token))
+                .orderBy("timestamp DESC")
                 .list();
-
-        for (OrderShop orderShop : list){
-            orderShop.decode();
-        }
 
         return list;
     }
@@ -106,6 +99,7 @@ public class OrderShop extends SugarRecord<OrderShop>{
         super.save();
     }
 
+
     public Map getOrderMap() {
         Map data = new HashMap<>();
 
@@ -123,8 +117,11 @@ public class OrderShop extends SugarRecord<OrderShop>{
         data.put("delivery_datetime", this.delivery_datetime);
 
         data.put("token", this.token);
+        data.put("paytoken", this.paytoken);
+        data.put("paymethod", this.paymethod);
 
         return data;
     }
+
 }
 

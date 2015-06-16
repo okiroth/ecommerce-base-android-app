@@ -2,12 +2,20 @@ package com.mevoyalsuper.userapp.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.mevoyalsuper.userapp.models.Address;
 import com.mevoyalsuper.userapp.models.CreditCard;
 import com.mevoyalsuper.userapp.models.User;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,28 +28,29 @@ public class Utils {
     public static boolean userDataIsCompleted() {
         // User contact
         User user = User.getLoggedUser();
-        if(user == null)        return false;
-        if(isEmpty(user.name))  return false;
-        if(isEmpty(user.phone)) return false;
-        if(isEmpty(user.email)) return false;
+        if (user == null) return false;
+        if (isEmpty(user.name)) return false;
+        if (isEmpty(user.phone)) return false;
+        if (isEmpty(user.email)) return false;
 
         // At least one address
-        if(isEmpty(Address.getMainAddress())) return false;
+        if (isEmpty(Address.getMainAddress())) return false;
 
         // Credit card data
         CreditCard card = CreditCard.getMainCard();
-        if(card == null)         return false;
-        if(isEmpty(card.number)) return false;
-        if(isEmpty(card.name))  return false;
-        if(isEmpty(card.ccv))   return false;
-        if(isEmpty(card.exp))   return false;
+        if (card == null) return false;
+        if (isEmpty(card.number)) return false;
+        if (isEmpty(card.name)) return false;
+        if (isEmpty(card.ccv)) return false;
+        if (isEmpty(card.exp)) return false;
+        if (isEmpty(card.dni)) return false;
 
         return true;
     }
 
-    public static boolean isEmpty(String str){
-        if(str == null) return true;
-        if(str.trim().length() == 0) return true;
+    public static boolean isEmpty(String str) {
+        if (str == null) return true;
+        if (str.trim().length() == 0) return true;
 
         return false;
     }
@@ -58,9 +67,10 @@ public class Utils {
     }
 
     public static String getToday() {
-        Date date =  new Date();
+        Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM");
         return dateFormat.format(date);
     }
+
 
 }

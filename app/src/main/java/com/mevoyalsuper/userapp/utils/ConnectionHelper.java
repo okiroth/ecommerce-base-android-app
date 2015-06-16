@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class ConnectionHelper {
 
-    public static final String API_WEB_SERVER_ADDRESS = "http://db.supermagico.com:80/api";
+    public static final String API_WEB_SERVER_ADDRESS = "http://192.168.0.103:3000/api";
 
     public static String getUrl(String address) throws IOException {
         URL url = new URL(address);

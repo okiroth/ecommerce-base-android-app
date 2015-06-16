@@ -29,7 +29,7 @@
         <!-- SUGAR ORM -->
         <meta-data
             android:name="DATABASE"
-            android:value="MVAS_09_NON_SYNC.db" />
+            android:value="MVAS_11_NON_SYNC.db" />
         <meta-data
             android:name="VERSION"
             android:value="1" />

@@ -37,7 +37,7 @@ public class DashboardFragment extends Fragment {
         listView.setAdapter(adapter);
 
         adapter.clear();
-        adapter.addAll(OrderShop.listAll(OrderShop.class));
+        adapter.addAll(OrderShop.getAllOrders());
         adapter.notifyDataSetChanged();
 
         return rootView;

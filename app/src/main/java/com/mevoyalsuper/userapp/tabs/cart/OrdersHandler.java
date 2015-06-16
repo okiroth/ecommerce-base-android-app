@@ -12,10 +12,12 @@ import com.mercadopago.core.MercadoPago;
 import com.mercadopago.core.MerchantServer;
 import com.mercadopago.model.CardToken;
 import com.mercadopago.model.Discount;
+import com.mercadopago.model.Issuer;
 import com.mercadopago.model.Item;
 import com.mercadopago.model.MerchantPayment;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentMethod;
+import com.mercadopago.model.Setting;
 import com.mercadopago.model.Token;
 import com.mevoyalsuper.userapp.R;
 import com.mevoyalsuper.userapp.models.CreditCard;
@@ -27,10 +29,17 @@ import com.mevoyalsuper.userapp.utils.Utils;
 import com.strongloop.android.loopback.Model;
 import com.strongloop.android.loopback.ModelRepository;
 import com.strongloop.android.loopback.RestAdapter;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
+import com.strongloop.android.remoting.VirtualObject;
+import com.strongloop.android.remoting.adapters.Adapter;
+
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -59,6 +68,9 @@ public class OrdersHandler {
         if (Utils.userDataIsCompleted()) {
             orderShop = new OrderShop();
             orderShop.prepareNewOrder(Product.getCartItems());
+
+            Long tsLong = System.currentTimeMillis()/1000;
+            orderShop.timestamp = tsLong.toString();
 
             ChooseDateTimeDialog dateTimeDialog = ChooseDateTimeDialog.newInstance(orderShop, this);
             dateTimeDialog.show(cartListFragment.getFragmentManager(), "dialog");
@@ -103,7 +115,6 @@ public class OrdersHandler {
                 .setPublicKey(GlobalValues.MP_MERCHANT_PUBLIC_KEY)
                 .build();
 
-
         mp.getPaymentMethods(new Callback<List<PaymentMethod>>() {
             public PaymentMethod paymentMethod;
 
@@ -118,26 +129,15 @@ public class OrdersHandler {
                     }
                 }
 
-                if (paymentMethod == null) {
-                    failPlaceOrder();
-                    return;
-                }
-
                 mp.createToken(cardToken, new Callback<Token>() {
                     @Override
                     public void success(Token token, Response response) {
-
-                        createPayment(
-                                cartListFragment.getActivity(),
-                                token.getId(),
-                                1,
-                                null,
-                                paymentMethod, null);
+                        pay(paymentMethod, token);
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Log.d("AUX", "err creating token");
+                        Log.d("AUX", "err creating token: " + error.getMessage());
                         failPlaceOrder();
                     }
                 });
@@ -153,49 +153,44 @@ public class OrdersHandler {
 
     }
 
-    public void createPayment(final Activity activity, String token, Integer installments, Long cardIssuerId, final PaymentMethod paymentMethod, Discount discount) {
+    private void pay(PaymentMethod paymentMethod, Token token) {
+        orderShop.paymethod = paymentMethod.getId();
+        orderShop.paytoken = token.getId();
+        orderShop.save();
 
-        if (paymentMethod != null) {
+        RestAdapter adapter = new RestAdapter(context, ConnectionHelper.API_WEB_SERVER_ADDRESS);
+        final ModelRepository repository = adapter.createRepository(OrderShop.LOOPBACK_NAME);
+        final Model orderApi = repository.createObject(orderShop.getOrderMap());
 
-            // Set item
-            Integer quantity = 1;
-            BigDecimal price = BigDecimal.valueOf(orderShop.charge_items + orderShop.charge_delivery);
-            Item item = new Item("Compra de productos en mevoyalsuper.com", quantity, price);
+        orderApi.invokeMethod(
+                "create",
+                orderShop.getOrderMap(),
+                new Adapter.JsonObjectCallback() {
 
-            // Set payment method id
-            String paymentMethodId = paymentMethod.getId();
+                    @Override
+                    public void onError(Throwable t) {
+                        t.printStackTrace();
+                        Log.d("AUX", "err saving api: " + t.getMessage());
+                    }
 
-            // Set campaign id
-            Long campaignId = (discount != null) ? discount.getId() : null;
+                    @Override
+                    public void onSuccess(JSONObject response) {
+                        String paytoken = (String) response.opt("paytoken");
+                        Integer payment = (Integer) response.opt("payment");
 
-            // Set merchant payment
-            MerchantPayment payment = new MerchantPayment(item, installments, cardIssuerId,
-                    token, paymentMethodId, campaignId, GlobalValues.MP_MERCHANT_ACCESS_TOKEN);
+                        orderShop.paytoken = paytoken;
+                        orderShop.payment = payment;
+                        orderShop.save();
 
-            // Create payment
-            MerchantServer.createPayment(activity,
-                    GlobalValues.MP_MERCHANT_BASE_URL,
-                    GlobalValues.MP_MERCHANT_CREATE_PAYMENT_URI,
-                    payment, new Callback<Payment>() {
-
-                        @Override
-                        public void success(Payment payment, Response response) {
-                            if(payment.getStatus().equals("OK")){
-                                successPlaceOrder();
-                            }
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-                            Log.d("AUX", "err: " + error.getMessage());
+                        if(payment == GlobalValues.PAYMENT_DONE){
+                            successPlaceOrder();
+                        }else{
                             failPlaceOrder();
                         }
-                    });
-        } else {
-            Log.d("AUX", "err method was null");
-            failPlaceOrder();
-        }
+                    }
+                });
     }
+
 
     private void failPlaceOrder() {
         progress.dismiss();
@@ -224,7 +219,6 @@ public class OrdersHandler {
             }
         });
     }
-
 
 
     private void showSuccessDialog(){

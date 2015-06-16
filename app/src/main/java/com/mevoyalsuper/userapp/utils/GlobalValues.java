@@ -43,6 +43,5 @@ public class GlobalValues {
 
     // PAYMENT
     public static int PAYMENT_PENDING = 0;
-    public static int PAYMENT_DELIVERY = 1;
     public static int PAYMENT_DONE = 2;
 }
