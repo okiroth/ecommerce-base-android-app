@@ -18,6 +18,7 @@ public class CreditCard extends SugarRecord<CreditCard> {
     public String exp;
     public String name;
     public String dni;
+    public String type;
 
     // User token
     public String user;

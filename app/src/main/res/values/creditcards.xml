@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="creditcards_array">
+        <item>Elige el tipo de tarjeta</item>
+        <item>visa</item>
+        <item>master</item>
+        <item>amex</item>
+        <item>diners</item>
+        <item>naranja</item>
+        <item>nativa</item>
+        <item>cencosud</item>
+        <item>cabal</item>
+        <item>argencard</item>
+    </string-array>
+</resources>

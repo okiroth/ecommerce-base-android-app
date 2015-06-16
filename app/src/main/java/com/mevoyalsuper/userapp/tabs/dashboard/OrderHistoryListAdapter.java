@@ -44,7 +44,9 @@ public class OrderHistoryListAdapter extends ArrayAdapter{
 
         viewHolder.date.setText(order.date);
         viewHolder.delivery.setText(status);
-        viewHolder.total.setText("$" + (order.charge_items + order.charge_delivery));
+
+        String price = String.format("%.2f", order.charge_items + order.charge_delivery);
+        viewHolder.total.setText("$" + price);
 
         int icon = R.drawable.ic_check_circle_black_18dp;
         if(order.status != GlobalValues.STATUS_DELIVER_DONE) icon = R.drawable.ic_local_shipping_black_18dp;

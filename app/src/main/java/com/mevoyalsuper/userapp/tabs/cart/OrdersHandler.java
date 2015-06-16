@@ -1,6 +1,5 @@
 package com.mevoyalsuper.userapp.tabs.cart;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,15 +8,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mercadopago.core.MercadoPago;
-import com.mercadopago.core.MerchantServer;
 import com.mercadopago.model.CardToken;
-import com.mercadopago.model.Discount;
-import com.mercadopago.model.Issuer;
-import com.mercadopago.model.Item;
-import com.mercadopago.model.MerchantPayment;
-import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentMethod;
-import com.mercadopago.model.Setting;
 import com.mercadopago.model.Token;
 import com.mevoyalsuper.userapp.R;
 import com.mevoyalsuper.userapp.models.CreditCard;
@@ -29,17 +21,16 @@ import com.mevoyalsuper.userapp.utils.Utils;
 import com.strongloop.android.loopback.Model;
 import com.strongloop.android.loopback.ModelRepository;
 import com.strongloop.android.loopback.RestAdapter;
-import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
-import com.strongloop.android.remoting.VirtualObject;
 import com.strongloop.android.remoting.adapters.Adapter;
 
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -93,7 +84,6 @@ public class OrdersHandler {
 
         CreditCard card = CreditCard.getMainCard();
 
-        // Set card token
         CardToken cardToken = new CardToken(
                 card.number,
                 Integer.valueOf(card.exp.substring(0, 2)), //month
@@ -103,62 +93,36 @@ public class OrdersHandler {
                 CreditCard.DNI_LABEL,
                 card.dni);
 
-        // Create token
-        createTokenAsync(cardToken);
+        createTokenAsync(cardToken, card);
     }
 
-    private void createTokenAsync(final CardToken cardToken) {
+    private void createTokenAsync(final CardToken cardToken, final CreditCard card) {
 
-        // Init MercadoPago object with public key
-        final MercadoPago mp = new MercadoPago.Builder()
+        MercadoPago mp = new MercadoPago.Builder()
                 .setContext(context)
                 .setPublicKey(GlobalValues.MP_MERCHANT_PUBLIC_KEY)
                 .build();
 
-        mp.getPaymentMethods(new Callback<List<PaymentMethod>>() {
-            public PaymentMethod paymentMethod;
-
-
+        mp.createToken(cardToken, new Callback<Token>() {
             @Override
-            public void success(List<PaymentMethod> paymentMethods, Response response) {
-
-                for (PaymentMethod method : paymentMethods) {
-                    if (method.getName().toLowerCase().equals("visa")) {
-                        paymentMethod = method;
-                        break;
-                    }
-                }
-
-                mp.createToken(cardToken, new Callback<Token>() {
-                    @Override
-                    public void success(Token token, Response response) {
-                        pay(paymentMethod, token);
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.d("AUX", "err creating token: " + error.getMessage());
-                        failPlaceOrder();
-                    }
-                });
+            public void success(Token token, Response response) {
+                pay(card.type, token);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("AUX", "err getting methods");
+                Log.d("AUX", "err creating token: " + error.getMessage());
                 failPlaceOrder();
             }
         });
-
-
     }
 
-    private void pay(PaymentMethod paymentMethod, Token token) {
-        orderShop.paymethod = paymentMethod.getId();
+    private void pay(String paymentMethod, Token token) {
+        orderShop.paymethod = paymentMethod;
         orderShop.paytoken = token.getId();
         orderShop.save();
 
-        RestAdapter adapter = new RestAdapter(context, ConnectionHelper.API_WEB_SERVER_ADDRESS);
+        RestAdapter adapter = new RestAdapter(context, GlobalValues.WEB_BASE_API);
         final ModelRepository repository = adapter.createRepository(OrderShop.LOOPBACK_NAME);
         final Model orderApi = repository.createObject(orderShop.getOrderMap());
 
@@ -171,6 +135,7 @@ public class OrdersHandler {
                     public void onError(Throwable t) {
                         t.printStackTrace();
                         Log.d("AUX", "err saving api: " + t.getMessage());
+                        failPlaceOrder();
                     }
 
                     @Override
@@ -202,7 +167,7 @@ public class OrdersHandler {
         orderShop.save();
 
         // Loopback
-        RestAdapter adapter = new RestAdapter(context, ConnectionHelper.API_WEB_SERVER_ADDRESS);
+        RestAdapter adapter = new RestAdapter(context, GlobalValues.WEB_BASE_API);
         ModelRepository repository = adapter.createRepository(OrderShop.LOOPBACK_NAME);
         Model orderApi = repository.createObject(orderShop.getOrderMap());
 

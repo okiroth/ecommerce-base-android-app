@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mevoyalsuper.userapp.R;
@@ -57,10 +58,12 @@ public class CreditCardFragment extends Fragment {
         EditText exp = (EditText) rootView.findViewById(R.id.userdata_card_exp);
         EditText name = (EditText) rootView.findViewById(R.id.userdata_card_name);
         EditText dni = (EditText) rootView.findViewById(R.id.userdata_card_dni);
+        Spinner cards = (Spinner) rootView.findViewById(R.id.cardtype_spinner);
 
         CreditCard card = CreditCard.getMainCard();
         if(card == null) card = new CreditCard();
 
+        card.type = cards.getSelectedItem().toString();
         card.name = name.getText().toString();
         card.ccv = ccv.getText().toString();
         card.number = number.getText().toString();

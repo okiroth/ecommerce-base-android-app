@@ -104,7 +104,7 @@ public class ItemsGridFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         if(Product.isEmpty()){
-            RestAdapter adapter = new RestAdapter(getActivity(), ConnectionHelper.API_WEB_SERVER_ADDRESS);
+            RestAdapter adapter = new RestAdapter(getActivity(), GlobalValues.WEB_BASE_API);
             ModelRepository repository = adapter.createRepository(Product.LOOPBACK_NAME);
 
             final ProgressDialog progress = ProgressDialog.show(getActivity(), null,

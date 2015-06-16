@@ -10,10 +10,8 @@ public class GlobalValues {
     public static final String MP_MERCHANT_PUBLIC_KEY = "TEST-d9d4f827-1d2a-48de-858c-ef6445984dc8";
     public static final String MP_MERCHANT_ACCESS_TOKEN = "TEST-3088349074981973-061016-55e106480a5f4bbbaadddce1778052aa__LB_LD__-95244956";
 
-
-    public static final String MP_MERCHANT_BASE_URL = "http://192.168.0.103:3000";
-    public static final String MP_MERCHANT_CREATE_PAYMENT_URI = "/api/Orders/doPayment";
-
+    public static final String WEB_BASE = "http://db.supermagico.com";
+    public static final String WEB_BASE_API = WEB_BASE + "/api";
 
     // ITEMS page
     public static final String ALL_CATEGORIES = "Todo";
@@ -44,4 +42,5 @@ public class GlobalValues {
     // PAYMENT
     public static int PAYMENT_PENDING = 0;
     public static int PAYMENT_DONE = 2;
+    public static int PAYMENT_EXECUTE = 10;
 }

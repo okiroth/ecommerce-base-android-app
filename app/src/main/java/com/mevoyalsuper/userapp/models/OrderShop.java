@@ -58,7 +58,6 @@ public class OrderShop extends SugarRecord<OrderShop>{
 
     public static List<OrderShop> getAllOrders(){
         List<OrderShop> list = Select.from(OrderShop.class)
-                .where(Condition.prop("token").eq(User.getLoggedUser().token))
                 .orderBy("timestamp DESC")
                 .list();
 
