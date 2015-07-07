@@ -7,8 +7,8 @@ public class GlobalValues {
 
     // TODO replace with a web call
     public static final double DELIVERY_FEE = 70.00;
-    public static final String MP_MERCHANT_PUBLIC_KEY = "TEST-d9d4f827-1d2a-48de-858c-ef6445984dc8";
-    public static final String MP_MERCHANT_ACCESS_TOKEN = "TEST-3088349074981973-061016-55e106480a5f4bbbaadddce1778052aa__LB_LD__-95244956";
+    public static final String MP_MERCHANT_PUBLIC_KEY = "TEST";
+    public static final String MP_MERCHANT_ACCESS_TOKEN = "TEST";
 
     public static final String WEB_BASE = "http://db.supermagico.com";
     public static final String WEB_BASE_API = WEB_BASE + "/api";
